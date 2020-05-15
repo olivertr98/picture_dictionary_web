@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <style media = "screen">
+      div{
+        margin:100px;
+      }
+      ul.menu{list-style-type:none;
+      margin:0;
+      padding:0;
+      overflow:hidden;
+      background-color:#333;
+      }
+      li.menu{
+        float:left;
+      }
+      li.menu a {
+        display:block;
+      }
+
+    </style>
+<title>Admin</title>
+</head>
+<script src="../ista330.sp20.pictureDictionary.api/server.js">
+</script>
+<style>
+  div{margin:100px;}
+</style>
+<body>
+<div>Step 1: Select or create a theme: <input onclick="stepOne()" list="browsers" id = "theme"></div>
+<datalist id="browsers" name ="browsers">
+  <option value="">
+  </option>
+</datalist>
+</body>
+
+</html>

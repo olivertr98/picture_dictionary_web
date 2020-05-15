@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div id="themesContainer"></div>
+
+    <script type="text/javascript">
+      let url = "http://localhost:3002";
+      fetch(`${url}/contents`)
+      .then(response => {
+        if(response.status === 200) {
+          return response.json();
+        } else {
+          return Error(response.status);
+        }
+      })
+      .then(contents => display(contents))
+      .catch(e => console.log(e));
+
+      function display(contents) {
+        let ol = document.createElement('ol');
+        for(let theme of contents) {
+          let li = document.createElement('li');
+          let a = document.createElement('a');
+          let text = document.createTextNode(theme.name);
+          a.appendChild(text);
+          a.setAttribute('href', `pages.html?id=${theme.id}&name=${theme.name}`);
+          li.appendChild(a);
+          ol.appendChild(li);
+        }
+        document.getElementById('themesContainer').appendChild(ol);
+      }
+
+    </script>
+  </body>
+</html>

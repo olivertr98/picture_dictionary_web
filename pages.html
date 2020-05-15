@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Page #?</title>
+  </head>
+  <body>
+    <p id="themeTitle"></p>
+    <div id="imagesContainer"></div>
+    <div >
+      <ul id="wordsContainer">
+
+      </ul>
+    </div>
+
+  <script type="text/javascript">
+   // window.location.search: ?id=1&name=The%20supermarket
+   let url = 'http://localhost:3002';
+    console.log(window.location.search);
+    let x = window.location.search.slice(1).split('&');
+    let themeId = x[0].split('=')[1];
+    let themeName = x[1].split('=')[1];
+    console.log(`id:${themeId} - name:${themeName}`);
+    document.getElementById('themeTitle').innerHTML = themeName;
+
+    fetch(url + '/pages/' + themeId)
+    .then(response => {
+      if(response.status === 200) {
+        return response.json();
+      } else {
+        throw Error(response.status);
+      }
+    })
+    .then(imageIds => addImageTags(imageIds))
+    .catch(e => console.log(e));
+
+    function addImageTags(imageIds) {
+      let imagesContainer = document.getElementById('imagesContainer');
+      for(let imageId of imageIds) {
+        let image = document.createElement('img');
+        image.setAttribute('src', url + '/pages/' +   + "/image/" + imageId);
+        image.setAttribute('onclick', `showWord(event, ${imageId})`);
+        imagesContainer.appendChild(image);
+      }
+    }
+
+    function showWord(event, imageId) {
+      let objectX = event.offsetX;
+      let objectY = event.offsetY;
+      fetch(url + "/words/" + themeId + "/" + imageId + "/" + objectX + "/" + objectY)
+      .then(response => {
+        if(response.status === 200) {
+          return response.json();
+        } else {
+          throw Error(response.status);
+        }
+      })
+      .then(word => addThewordToThelist(word))
+      .catch(e => console.log(e));
+    }
+
+    function addThewordToThelist(word) {
+       let li = document.createElement('li');
+       let text = document.createTextNode(word.number + "-" + word.name);
+       li.appendChild(text);
+       document.getElementById('wordsContainer').appendChild(li);
+    }
+
+    //URLSearchParams(window.location.search);
+  </script>
+  </body>
+</html>
